@@ -4,13 +4,17 @@ import { useState } from 'react';
 
 import { API_BASE_2 } from '../../config';
 import { useTrainers } from '../../context/TrainersContext';
+import { Input, Select } from '../../iu/Input';
 
 const RowStyled = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr 0.5fr;
   gap: 1rem;
-  border: solid 2px var(--color-grey-200);
   padding: 2rem 4rem;
+
+  &:not(:last-child) {
+    border-bottom: solid 2px var(--color-grey-200);
+  }
 
   p {
     font-size: 1.7rem;
@@ -64,9 +68,9 @@ function TrainersRow({ trainer }) {
 
   return (
     <RowStyled>
-      <input value={name} onChange={(e) => setName(e.target.value)} />
-      <input value={age} onChange={(e) => setAge(e.target.value)} />
-      <select
+      <Input value={name} onChange={(e) => setName(e.target.value)} />
+      <Input value={age} onChange={(e) => setAge(e.target.value)} />
+      <Select
         id="gender"
         value={gender}
         onChange={(e) => setGender(e.target.value)}
@@ -74,8 +78,8 @@ function TrainersRow({ trainer }) {
       >
         <option value="man">man</option>
         <option value="women">women</option>
-      </select>
-      <input
+      </Select>
+      <Input
         value={numberOfPokemons}
         onChange={(e) => setNumberOfPokemons(e.target.value)}
       />

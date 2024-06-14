@@ -4,13 +4,17 @@ import Button from '../../iu/Button';
 
 import { API_BASE_2 } from '../../config';
 import { useTrainers } from '../../context/TrainersContext';
+import { Input, Select } from '../../iu/Input';
 
 const RowStyled = styled.form`
   display: grid;
+  align-items: end;
   grid-template-columns: 1fr 1fr 1fr 1fr 0.7fr;
+  border-radius: 11px;
   gap: 2rem;
-  border: solid 2px var(--color-grey-200);
+  border: solid 2px var(--color-grey-100);
   padding: 2rem 4rem;
+  box-shadow: var(--shadow-sm);
 
   p {
     font-size: 1.7rem;
@@ -21,6 +25,7 @@ const RowStyled = styled.form`
   div {
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
   }
   select {
     height: 100%;
@@ -68,7 +73,7 @@ function CreateTrainer() {
     <RowStyled onSubmit={(e) => e.preventDefault()}>
       <div>
         <label htmlFor="">Name</label>
-        <input
+        <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -76,11 +81,11 @@ function CreateTrainer() {
       </div>
       <div>
         <label htmlFor="age">Age</label>
-        <input value={age} onChange={(e) => setAge(e.target.value)} required />
+        <Input value={age} onChange={(e) => setAge(e.target.value)} required />
       </div>
       <div>
         <label htmlFor="gender">Gender</label>
-        <select
+        <Select
           id="gender"
           value={gender}
           onChange={(e) => setGender(e.target.value)}
@@ -88,11 +93,11 @@ function CreateTrainer() {
         >
           <option value="man">man</option>
           <option value="women">women</option>
-        </select>
+        </Select>
       </div>
       <div>
-        <label htmlFor="NumberOfPokemons">number of pokemons</label>
-        <input
+        <label htmlFor="NumberOfPokemons">Number of pokemons</label>
+        <Input
           value={numberOfPokemons}
           onChange={(e) => setNumberOfPokemons(e.target.value)}
           required
