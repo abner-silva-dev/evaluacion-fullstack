@@ -31,17 +31,19 @@ const MyDoc = ({ pokemon }) => (
   </Document>
 );
 
-const PdfLink = ({ pokemon }) => (
-  <div>
-    <PDFDownloadLink
-      document={<MyDoc pokemon={pokemon} />}
-      fileName={`${pokemon.name}.pdf`}
-    >
-      {({ blob, url, loading, error }) =>
-        loading ? 'Loading document...' : 'Download PDF!'
-      }
-    </PDFDownloadLink>
-  </div>
-);
+const PdfLink = ({ pokemon }) => {
+  return (
+    <div>
+      <PDFDownloadLink
+        document={<MyDoc pokemon={pokemon} />}
+        fileName={`${pokemon.name}.pdf`}
+      >
+        {({ blob, url, loading, error }) =>
+          loading ? 'Loading document...' : 'Download PDF!'
+        }
+      </PDFDownloadLink>
+    </div>
+  );
+};
 
 export default PdfLink;

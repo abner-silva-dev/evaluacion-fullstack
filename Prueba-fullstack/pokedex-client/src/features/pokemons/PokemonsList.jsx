@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import PokemonItem from './PokemonItem';
-import { usePokemon } from '../../context/PokemonsContext';
-
 import Spinner from '../../iu/Spinner';
 import ErrorMessage from './../../iu/ErrorMessage';
+
+import { usePokemon } from '../../context/PokemonsContext';
 
 const PokemonsStyles = styled.ul`
   display: grid;

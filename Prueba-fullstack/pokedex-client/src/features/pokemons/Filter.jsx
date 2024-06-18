@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import { usePokemon } from '../../context/PokemonsContext';
 import Button from '../../iu/Button';
 import { useState } from 'react';
+import { API_BASE } from '../../config';
 
-const API_BASE = 'http://localhost:3000/api/v1/pokemons';
-
-const FilterContainer = styled.div`
+const FilterContainer = styled.form`
   width: 40%;
   display: flex;
   gap: 1rem;
@@ -20,7 +19,8 @@ const FilterStyled = styled.input`
 `;
 
 function Filter() {
-  const { setIsloading, setPokemons, setError } = usePokemon();
+  const { setIsloading, setPokemons, setError, setLimit, setQuery, setPage } =
+    usePokemon();
   const [search, setSearch] = useState('');
 
   async function handleSearch() {
@@ -29,12 +29,11 @@ function Filter() {
     try {
       const res = await fetch(`${API_BASE}?&search=${search}`);
       const pokemons = await res.json();
-
-      console.log(pokemons);
-
       if (pokemons.status === 'fail') throw new Error(pokemons.error);
-
       setPokemons(pokemons?.data?.data);
+      setQuery(search);
+      setPage('1');
+      setLimit(pokemons?.data?.data?.length);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -43,7 +42,7 @@ function Filter() {
   }
 
   return (
-    <FilterContainer>
+    <FilterContainer onSubmit={(e) => e.preventDefault()}>
       <FilterStyled
         type="text"
         placeholder="Search pokemon"

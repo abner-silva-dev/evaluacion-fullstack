@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import Button from '../../iu/Button';
 import PdfLink from './PdfPokemon';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { API_BASE } from '../../config';
+import { useInView } from 'react-intersection-observer';
+import MiniSpinner from '../../iu/MiniSpinner';
 
 const PokemonItemStyle = styled.li`
   border: solid 2px var(--color-grey-100);
@@ -12,7 +14,6 @@ const PokemonItemStyle = styled.li`
   border-radius: 11px;
   box-shadow: var(--shadow-md);
   text-align: center;
-  cursor: pointer;
 
   display: flex;
   flex-direction: column;
@@ -61,22 +62,32 @@ const ImagePokemon = styled.img`
 `;
 
 function PokemonItem({ pokemon }) {
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
   const [pokemonDatails, setPokemonDatails] = useState(null);
 
-  async function handleDetails() {
-    const res = await fetch(`${API_BASE}/${pokemon.name}`);
-    const data = await res.json();
+  useEffect(() => {
+    if (!inView) return;
 
-    const pokemonData = data?.data?.pokemon;
+    async function getDetailPokemon() {
+      const res = await fetch(`${API_BASE}/${pokemon.name}`);
+      const data = await res.json();
 
-    setPokemonDatails(pokemonData);
-  }
+      const pokemonData = data?.data?.pokemon;
+
+      setPokemonDatails(pokemonData);
+    }
+
+    getDetailPokemon();
+  }, [inView, pokemon.name]);
 
   return (
-    <PokemonItemStyle onClick={handleDetails}>
+    <PokemonItemStyle ref={ref}>
       <SubrayText>{pokemon.name}</SubrayText>
 
-      {pokemonDatails && (
+      {pokemonDatails ? (
         <>
           <ImagePokemon
             src={`${pokemonDatails?.sprites?.front_default}`}
@@ -88,13 +99,15 @@ function PokemonItem({ pokemon }) {
           <Button $variation="danger" $size="small">
             <PdfLink
               pokemon={{
-                name: pokemon.name,
+                name: pokemonDatails.name,
                 img: pokemonDatails?.sprites?.front_default,
                 height: pokemonDatails?.height,
               }}
             />
           </Button>
         </>
+      ) : (
+        <MiniSpinner />
       )}
     </PokemonItemStyle>
   );

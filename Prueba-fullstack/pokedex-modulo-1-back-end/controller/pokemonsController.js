@@ -7,15 +7,16 @@ exports.getAllPokemons = async (req, res) => {
     const response = await axios.get(
       'https://pokeapi.co/api/v2/pokemon?limit=1302'
     );
-    const pokemons = response.data.results;
 
+    const pokemons = response.data.results;
     const pokemonsModifier = apiFeatures(pokemons, req.query);
 
     res.status(200).json({
       state: 'success',
       data: {
-        results: pokemonsModifier.length,
-        data: pokemonsModifier,
+        totalResults: pokemonsModifier.totalResults,
+        results: pokemonsModifier.pokemonsQuery.length,
+        data: pokemonsModifier.pokemonsQuery,
       },
     });
   } catch (err) {
